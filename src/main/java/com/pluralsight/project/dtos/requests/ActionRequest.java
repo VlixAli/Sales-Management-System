@@ -13,10 +13,10 @@ public class ActionRequest {
     private String descriptionAr ;
     private String descriptionEn ;
     private String traceId;
-    private UserResponse user;
-    private ActionTypeResponse actionType;
-    private ApplicationResponse application;
-    private BEResponse be;
-    private List<ParamResponse> params;
+    private Long user;
+    private Long actionType;
+    private Long application;
+    private Long be;
+    private List<ParamRequest> params;
 
 }
