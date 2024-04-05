@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BEResponse {
 
-    private Long BEId ;
-    private String BEName;
-
-
+    private Long id;
+    private String name;
 }

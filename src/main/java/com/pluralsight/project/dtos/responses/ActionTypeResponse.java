@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ActionTypeResponse {
 
-    private Long actionTypeId ;
+    private Long id ;
 
-    private String nameEng;
+    private String nameEn;
 
     private String nameAr ;
 

@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ParamResponse {
 
-    private Long paramId;
-    private String paramValue ;
+    private Long id;
+    private String value ;
     private ParamTypeResponse paramType;
 
 

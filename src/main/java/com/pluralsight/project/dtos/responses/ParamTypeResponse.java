@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ParamTypeResponse {
-    private Long paramTypeId;
+    private Long id;
     private String nameEn ;
     private String NameAr;
 
