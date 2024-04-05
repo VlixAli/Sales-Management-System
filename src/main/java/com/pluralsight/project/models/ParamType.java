@@ -12,7 +12,7 @@ import java.util.List;
 @Entity(name="param_type")
 public class ParamType {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String code ;
