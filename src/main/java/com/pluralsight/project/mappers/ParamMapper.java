@@ -11,6 +11,4 @@ public interface ParamMapper {
 
     List<ParamResponse> listParamResponse(List<Param> params);
     ParamResponse ParamToParamResponse(Param param);
-    Param ParamResponseToParam(ParamResponse paramResponse);
-
 }

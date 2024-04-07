@@ -13,5 +13,4 @@ public interface BEMapper {
 
     BEResponse BEToBEResponse(BE be);
 
-    BE BEResponseToBE(BEResponse beResponse);
 }

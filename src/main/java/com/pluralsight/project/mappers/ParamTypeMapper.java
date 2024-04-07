@@ -9,6 +9,4 @@ public interface ParamTypeMapper {
 
     ParamTypeResponse ParamTypeToPTResponse(ParamType paramType);
 
-    ParamType PTResponseToParamType(ParamTypeResponse paramTypeResponse);
-
 }

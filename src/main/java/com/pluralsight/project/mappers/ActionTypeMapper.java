@@ -8,8 +8,4 @@ import org.mapstruct.Mapper;
 public interface ActionTypeMapper {
 
     ActionTypeResponse ActionTypeToATResponse(ActionType actionType);
-
-    ActionType ATResponseToActionType(ActionTypeResponse actionTypeResponse);
-
-
 }

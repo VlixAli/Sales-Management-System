@@ -9,6 +9,4 @@ public interface ApplicationMapper {
 
     ApplicationResponse ApplicationToApplicationResponse(Application application);
 
-    Application ApplicationResponseToApplication(ApplicationResponse applicationResponse);
-
 }
