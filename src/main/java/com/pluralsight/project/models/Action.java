@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.Date;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity(name = "actions")
+@SQLDelete(sql = "Update actions set deleted = true where id=?")
+@SQLRestriction("deleted=false")
 public class Action {
 
   @Id
@@ -50,5 +54,6 @@ public class Action {
   @OneToMany(mappedBy = "action", cascade = CascadeType.ALL)
   private List<Param> params;
 
+  private boolean deleted = Boolean.FALSE;
 
 }
