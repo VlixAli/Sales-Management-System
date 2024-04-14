@@ -22,8 +22,8 @@ public class ActionController {
     private final ActionService actionService;
 
     @GetMapping
-    public ResponseEntity<List<ActionResponse>> index() {
-        return ResponseEntity.ok(actionService.findAll());
+    public ResponseEntity<List<ActionResponse>> index(@RequestParam(required = false) String username) {
+        return ResponseEntity.ok(actionService.findAll(username));
     }
 
     @GetMapping("/{id}")

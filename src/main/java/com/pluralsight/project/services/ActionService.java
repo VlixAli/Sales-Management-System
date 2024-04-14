@@ -8,12 +8,15 @@ import com.pluralsight.project.models.Action;
 import com.pluralsight.project.models.Param;
 import com.pluralsight.project.repositories.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.pluralsight.project.specifications.ActionSpecification.hasUser;
 
 @Service
 @RequiredArgsConstructor
@@ -27,8 +30,10 @@ public class ActionService {
     private final BERepository beRepository;
     private final ParamTypeRepository paramTypeRepository;
 
-    public List<ActionResponse> findAll() {
-        return actionMapper.listActionResponse(actionRepository.findAll());
+    public List<ActionResponse> findAll(String username) {
+        Specification<Action> filters = Specification.where(StringUtils.hasLength(username) ? hasUser(username) : null);
+
+        return actionMapper.listActionResponse(actionRepository.findAll(filters));
     }
 
     public ActionResponse findById(Long id) {
