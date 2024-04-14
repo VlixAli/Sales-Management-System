@@ -22,8 +22,9 @@ public class ActionController {
     private final ActionService actionService;
 
     @GetMapping
-    public ResponseEntity<List<ActionResponse>> index(@RequestParam(required = false) String username) {
-        return ResponseEntity.ok(actionService.findAll(username));
+    public ResponseEntity<List<ActionResponse>> index(@RequestParam(required = false) String username,
+                                                      @RequestParam(required = false) String be) {
+        return ResponseEntity.ok(actionService.findAll(username, be));
     }
 
     @GetMapping("/{id}")
@@ -51,7 +52,7 @@ public class ActionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable Long id){
+    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         actionService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

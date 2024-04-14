@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.pluralsight.project.specifications.ActionSpecification.hasBE;
 import static com.pluralsight.project.specifications.ActionSpecification.hasUser;
 
 @Service
@@ -30,8 +31,10 @@ public class ActionService {
     private final BERepository beRepository;
     private final ParamTypeRepository paramTypeRepository;
 
-    public List<ActionResponse> findAll(String username) {
-        Specification<Action> filters = Specification.where(StringUtils.hasLength(username) ? hasUser(username) : null);
+    public List<ActionResponse> findAll(String username, String be) {
+        Specification<Action> filters =
+                Specification.where(StringUtils.hasLength(username) ? hasUser(username) : null)
+                        .and(StringUtils.hasLength(be) ? hasBE(be) : null);
 
         return actionMapper.listActionResponse(actionRepository.findAll(filters));
     }

@@ -12,4 +12,10 @@ public class ActionSpecification {
                 criteriaBuilder.like(root.get("user").get("lastName"), "%" + username + "%"));
     }
 
+    public static Specification<Action> hasBE(String be) {
+        return ((root, query, criteriaBuilder) ->
+                criteriaBuilder.like(root.get("be").get("name"), "%" + be + "%"));
+    }
+
+
 }
