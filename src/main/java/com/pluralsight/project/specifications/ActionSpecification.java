@@ -22,4 +22,9 @@ public class ActionSpecification {
                 criteriaBuilder.like(root.get("application").get("name"), "%" + application + "%");
     }
 
+    public static Specification<Action> hasAction(Long traceId){
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("traceId"), traceId);
+    }
+
 }
