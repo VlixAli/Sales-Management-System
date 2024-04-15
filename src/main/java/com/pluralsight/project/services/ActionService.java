@@ -30,12 +30,14 @@ public class ActionService {
     private final BERepository beRepository;
     private final ParamTypeRepository paramTypeRepository;
 
-    public List<ActionResponse> findAll(String username, String be, String application,Long traceId) {
+    public List<ActionResponse> findAll(String username, String be, String application, Long traceId
+            , String param) {
         Specification<Action> filters =
                 Specification.where(StringUtils.hasLength(username) ? hasUser(username) : null)
                         .and(StringUtils.hasLength(be) ? hasBE(be) : null)
                         .and(StringUtils.hasLength(application) ? hasApplication(application) : null)
-                        .and(traceId != null ? hasAction(traceId) : null);
+                        .and(traceId != null ? hasAction(traceId) : null)
+                        .and(StringUtils.hasLength(param) ? hasParam(param) : null);
 
         return actionMapper.listActionResponse(actionRepository.findAll(filters));
     }
