@@ -31,13 +31,14 @@ public class ActionService {
     private final ParamTypeRepository paramTypeRepository;
 
     public List<ActionResponse> findAll(String username, String be, String application, Long traceId
-            , String param) {
+            , String param, String paramTypeEn) {
         Specification<Action> filters =
                 Specification.where(StringUtils.hasLength(username) ? hasUser(username) : null)
                         .and(StringUtils.hasLength(be) ? hasBE(be) : null)
                         .and(StringUtils.hasLength(application) ? hasApplication(application) : null)
                         .and(traceId != null ? hasAction(traceId) : null)
-                        .and(StringUtils.hasLength(param) ? hasParam(param) : null);
+                        .and(StringUtils.hasLength(param) ? hasParam(param) : null)
+                        .and(StringUtils.hasLength(paramTypeEn) ? hasParamType(paramTypeEn) : null);
 
         return actionMapper.listActionResponse(actionRepository.findAll(filters));
     }

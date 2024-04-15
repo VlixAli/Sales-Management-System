@@ -36,4 +36,12 @@ public class ActionSpecification {
         };
     }
 
+    public static Specification<Action> hasParamType(String paramTypeEn) {
+        return (root, query, criteriaBuilder) -> {
+            Join<Param, Action> actionParams = root.join("params");
+            return criteriaBuilder.equal(actionParams.get("paramType").get("nameEn"), paramTypeEn);
+        };
+    }
+
+
 }

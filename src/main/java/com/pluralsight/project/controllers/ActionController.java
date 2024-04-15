@@ -26,8 +26,9 @@ public class ActionController {
                                                       @RequestParam(required = false) String be,
                                                       @RequestParam(required = false) String application,
                                                       @RequestParam(required = false) Long traceId,
-                                                      @RequestParam(required = false) String param) {
-        return ResponseEntity.ok(actionService.findAll(username, be, application, traceId, param));
+                                                      @RequestParam(required = false) String param,
+                                                      @RequestParam(required = false) String paramTypeEn) {
+        return ResponseEntity.ok(actionService.findAll(username, be, application, traceId, param, paramTypeEn));
     }
 
     @GetMapping("/{id}")
