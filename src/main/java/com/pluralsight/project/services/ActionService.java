@@ -8,6 +8,8 @@ import com.pluralsight.project.models.Action;
 import com.pluralsight.project.models.Param;
 import com.pluralsight.project.repositories.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -30,8 +32,8 @@ public class ActionService {
     private final BERepository beRepository;
     private final ParamTypeRepository paramTypeRepository;
 
-    public List<ActionResponse> findAll(String username, String be, String application, Long traceId
-            , String param, String paramTypeEn) {
+    public Page<ActionResponse> findAll(String username, String be, String application, Long traceId
+            , String param, String paramTypeEn, Pageable pageable) {
         Specification<Action> filters =
                 Specification.where(StringUtils.hasLength(username) ? hasUser(username) : null)
                         .and(StringUtils.hasLength(be) ? hasBE(be) : null)
@@ -40,7 +42,7 @@ public class ActionService {
                         .and(StringUtils.hasLength(param) ? hasParam(param) : null)
                         .and(StringUtils.hasLength(paramTypeEn) ? hasParamType(paramTypeEn) : null);
 
-        return actionMapper.listActionResponse(actionRepository.findAll(filters));
+        return actionMapper.pageActionResponse(actionRepository.findAll(filters, pageable));
     }
 
     public ActionResponse findById(Long id) {

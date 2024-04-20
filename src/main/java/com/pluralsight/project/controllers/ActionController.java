@@ -1,15 +1,17 @@
 package com.pluralsight.project.controllers;
 
 import com.pluralsight.project.dtos.requests.ActionRequest;
+import com.pluralsight.project.dtos.requests.PageRequestDto;
 import com.pluralsight.project.dtos.responses.ActionResponse;
 import com.pluralsight.project.dtos.responses.ErrorResponse;
 import com.pluralsight.project.services.ActionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/actions")
@@ -22,13 +24,18 @@ public class ActionController {
     private final ActionService actionService;
 
     @GetMapping
-    public ResponseEntity<List<ActionResponse>> index(@RequestParam(required = false) String username,
+    public ResponseEntity<Page<ActionResponse>> index(@RequestParam(required = false) String username,
                                                       @RequestParam(required = false) String be,
                                                       @RequestParam(required = false) String application,
                                                       @RequestParam(required = false) Long traceId,
                                                       @RequestParam(required = false) String param,
-                                                      @RequestParam(required = false) String paramTypeEn) {
-        return ResponseEntity.ok(actionService.findAll(username, be, application, traceId, param, paramTypeEn));
+                                                      @RequestParam(required = false) String paramTypeEn,
+                                                      @RequestParam(required = false) Integer pageNo,
+                                                      @RequestParam(required = false) Sort.Direction sort,
+                                                      @RequestParam(required = false) String sortByColumn) {
+        PageRequestDto pageRequestDto = new PageRequestDto(pageNo, sort, sortByColumn);
+        Pageable pageable = new PageRequestDto().getPageable(pageRequestDto);
+        return ResponseEntity.ok(actionService.findAll(username, be, application, traceId, param, paramTypeEn, pageable));
     }
 
     @GetMapping("/{id}")
