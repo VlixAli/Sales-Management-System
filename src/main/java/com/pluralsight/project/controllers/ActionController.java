@@ -11,7 +11,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/actions")
@@ -45,13 +50,32 @@ public class ActionController {
     }
 
     @PostMapping
-    public ResponseEntity store(@RequestBody ActionRequest actionRequest) {
+    public ResponseEntity store(@RequestBody @Validated(ActionRequest.Save.class) ActionRequest actionRequest,
+                                BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(bindingResult.getAllErrors()
+                            .stream()
+                            .map(ObjectError::getDefaultMessage)
+                            .collect(Collectors.joining("\n")));
+        }
         ActionResponse actionResponse = actionService.create(actionRequest);
         return new ResponseEntity<>(actionResponse, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity update(@PathVariable Long id, @RequestBody ActionRequest actionRequest) {
+    public ResponseEntity update(@PathVariable Long id,
+                                 @RequestBody @Validated(ActionRequest.Update.class) ActionRequest actionRequest,
+                                 BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(bindingResult.getAllErrors()
+                            .stream()
+                            .map(ObjectError::getDefaultMessage)
+                            .collect(Collectors.joining("\n")));
+        }
         ActionResponse actionResponse = actionService.update(id, actionRequest);
         if (actionResponse == null) {
             return errorResponse;
