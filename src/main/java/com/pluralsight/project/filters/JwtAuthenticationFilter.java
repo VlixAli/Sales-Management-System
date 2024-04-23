@@ -1,5 +1,6 @@
-package com.pluralsight.project.config;
+package com.pluralsight.project.filters;
 
+import com.pluralsight.project.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

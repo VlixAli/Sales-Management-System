@@ -1,5 +1,6 @@
 package com.pluralsight.project.config;
 
+import com.pluralsight.project.filters.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
