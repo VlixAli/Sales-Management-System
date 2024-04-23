@@ -3,6 +3,8 @@ package com.pluralsight.project.controllers;
 import com.pluralsight.project.dtos.requests.LoginRequest;
 import com.pluralsight.project.dtos.requests.RegisterRequest;
 import com.pluralsight.project.services.AuthenticationService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,7 +26,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Validated RegisterRequest request,
+    public ResponseEntity<?> register(@RequestBody @Validated RegisterRequest request,
                                    BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity
@@ -41,7 +44,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Validated LoginRequest request,
+    public ResponseEntity<?> login(@RequestBody @Validated LoginRequest request,
                                 BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity
@@ -56,5 +59,13 @@ public class AuthenticationController {
         } catch (Exception e) {
             return new ResponseEntity<>("wrong credentials", HttpStatus.FORBIDDEN);
         }
+    }
+
+    @PostMapping("/refresh-token")
+    public void refreshToken(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws IOException {
+        authenticationService.refreshToken(request, response);
     }
 }
