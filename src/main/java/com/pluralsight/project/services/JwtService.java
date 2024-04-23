@@ -1,4 +1,4 @@
-package com.pluralsight.project.config;
+package com.pluralsight.project.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

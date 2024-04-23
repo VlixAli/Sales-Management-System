@@ -1,6 +1,5 @@
 package com.pluralsight.project.services;
 
-import com.pluralsight.project.config.JwtService;
 import com.pluralsight.project.dtos.requests.LoginRequest;
 import com.pluralsight.project.dtos.requests.RegisterRequest;
 import com.pluralsight.project.dtos.responses.AuthenticationResponse;
