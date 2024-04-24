@@ -30,6 +30,7 @@ public class ActionRequest {
 
     @NotNull(message = "Action Type Id must not be null", groups = Save.class)
     @Min(value = 1,message = "Action Type Id must not be empty", groups = {Save.class, Update.class})
+    @ActionTypeExists(groups = {Save.class, Update.class})
     private Long actionType;
 
     private Long application;
