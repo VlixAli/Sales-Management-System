@@ -15,8 +15,6 @@ public class ParamType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String code ;
-
     @Column(name = "name_en")
     private String nameEn ;
 
