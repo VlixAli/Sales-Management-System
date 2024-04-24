@@ -20,6 +20,7 @@ public class ActionRequest {
 
     @NotNull(message = "Trace Id must not be null", groups = Save.class)
     @Min(value = 1,message = "Trace Id must not be empty", groups = {Save.class, Update.class})
+    @UniqueTraceId(groups = {Save.class, Update.class})
     private String traceId;
 
     @NotNull(message = "User Id must not be null", groups = Save.class)
