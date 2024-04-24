@@ -11,12 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/actions")
@@ -29,9 +25,9 @@ public class ActionController {
     private final ActionService actionService;
 
     @GetMapping
-    public ResponseEntity<Page<ActionResponse>> index(PageActionRequest request) {
+    public ResponseEntity<Page<ActionResponse>> index(@Validated PageActionRequest request) {
         PageRequestDto pageRequestDto = new PageRequestDto(request.getPageNo(),
-                request.getSort(), request.getSortByColumn());
+                request.sortToDirection(request.getSort()), request.getSortByColumn());
 
         Pageable pageable = new PageRequestDto().getPageable(pageRequestDto);
 
@@ -41,7 +37,7 @@ public class ActionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity show(@PathVariable Long id) {
+    public ResponseEntity<?> show(@PathVariable Long id) {
         ActionResponse actionResponse = actionService.findById(id);
         if (actionResponse == null) {
             return errorResponse;
@@ -50,32 +46,14 @@ public class ActionController {
     }
 
     @PostMapping
-    public ResponseEntity store(@RequestBody @Validated(ActionRequest.Save.class) ActionRequest actionRequest,
-                                BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(bindingResult.getAllErrors()
-                            .stream()
-                            .map(ObjectError::getDefaultMessage)
-                            .collect(Collectors.joining("\n")));
-        }
+    public ResponseEntity<?> store(@RequestBody @Validated(ActionRequest.Save.class) ActionRequest actionRequest) {
         ActionResponse actionResponse = actionService.create(actionRequest);
         return new ResponseEntity<>(actionResponse, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity update(@PathVariable Long id,
-                                 @RequestBody @Validated(ActionRequest.Update.class) ActionRequest actionRequest,
-                                 BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(bindingResult.getAllErrors()
-                            .stream()
-                            .map(ObjectError::getDefaultMessage)
-                            .collect(Collectors.joining("\n")));
-        }
+    public ResponseEntity<?> update(@PathVariable Long id,
+                                 @RequestBody @Validated(ActionRequest.Update.class) ActionRequest actionRequest) {
         ActionResponse actionResponse = actionService.update(id, actionRequest);
         if (actionResponse == null) {
             return errorResponse;
