@@ -1,8 +1,7 @@
 package com.pluralsight.project.dtos.requests;
 
-import com.pluralsight.project.dtos.responses.*;
+import com.pluralsight.project.validations.annotations.*;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +12,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class ActionRequest {
+
 
 
     private String descriptionAr ;
@@ -35,7 +35,10 @@ public class ActionRequest {
 
     @ApplicationExists(groups = {Save.class, Update.class})
     private Long application;
+
+    @BEExists(groups = {Save.class, Update.class})
     private Long be;
+
     private List<ParamRequest> params;
 
     public interface Save {}
