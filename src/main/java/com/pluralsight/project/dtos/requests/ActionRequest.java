@@ -33,6 +33,7 @@ public class ActionRequest {
     @ActionTypeExists(groups = {Save.class, Update.class})
     private Long actionType;
 
+    @ApplicationExists(groups = {Save.class, Update.class})
     private Long application;
     private Long be;
     private List<ParamRequest> params;
