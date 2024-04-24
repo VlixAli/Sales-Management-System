@@ -1,6 +1,5 @@
 package com.pluralsight.project.dtos.requests;
 
-import com.pluralsight.project.models.ParamType;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
