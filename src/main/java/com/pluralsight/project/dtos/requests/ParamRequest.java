@@ -8,5 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ParamRequest {
     private String value;
+
+    @ActionExists
+    @NotBlank(message = "action shouldn't be null or empty")
+    private Long action;
+
+
     private Long paramType;
 }
