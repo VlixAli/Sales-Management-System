@@ -24,6 +24,7 @@ public class ActionRequest {
 
     @NotNull(message = "User Id must not be null", groups = Save.class)
     @Min(value = 1,message = "User Id must not be empty", groups = {Save.class, Update.class})
+    @UserExists(groups = {Save.class, Update.class})
     private Long user;
 
     @NotNull(message = "Action Type Id must not be null", groups = Save.class)
