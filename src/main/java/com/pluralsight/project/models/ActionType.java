@@ -1,20 +1,22 @@
 package com.pluralsight.project.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "action_type")
 public class ActionType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String code;
 
     @Column(name = "name_en")
     private String nameEn;

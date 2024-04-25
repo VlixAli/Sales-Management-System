@@ -1,6 +1,8 @@
 package com.pluralsight.project.models;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +10,9 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity(name="param_type")
 public class ParamType {
     @Id
