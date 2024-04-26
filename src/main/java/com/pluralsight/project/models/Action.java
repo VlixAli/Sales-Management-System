@@ -2,6 +2,7 @@ package com.pluralsight.project.models;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,14 +38,17 @@ public class Action {
     private Date actionTime;
 
     @Column(name = "trace_id")
+    @NotNull
     private String traceId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @NotNull
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "action_type_id", referencedColumnName = "id")
+    @NotNull
     private ActionType actionType;
 
     @ManyToOne

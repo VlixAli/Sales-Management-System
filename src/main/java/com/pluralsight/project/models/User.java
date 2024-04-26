@@ -1,6 +1,8 @@
 package com.pluralsight.project.models;
 
 import com.pluralsight.project.models.enums.Role;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,16 +27,22 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "first_name")
+    @NotNull
     private String firstName;
 
     @Column(name = "last_name")
+    @NotNull
     private String lastName;
 
+    @Email
+    @NotNull
     private String email;
 
+    @NotNull
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
