@@ -21,9 +21,12 @@
 ## ⛏️ Built Using <a name = "built"></a>
 
 ---
-- [MySQL](https://www.mongodb.com/) - Database
+- [MySQL](https://www.mysql.com/) - Database
 - [Java](https://docs.oracle.com/en/java/) - Programming Language
 - [Spring boot](https://spring.io/projects/spring-boot) - Web Framework
+- [spring security](https://spring.io/projects/spring-security)
+- [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
+- [JWT](https://jwt.io/)
 
 ## 🧐Features <a name = "features"></a>
 
@@ -32,6 +35,7 @@
 - endpoints for retrieving all actions and search them using some request parameters(username, be, application, traceId, param, paramTypeEn)
 - You can also paginate them using (pageNo, sort(ASC or DESC), sortByColumn(column within the actionRequest) )
 - 4 endpoints to retrieve, create, update and delete actions
+- 2 endpoints for logout and refreshToken
 
 ## 🔧Requirements <a name = "requirements"></a>
 
@@ -68,6 +72,9 @@ the application will be available at [http://localhost:8080](http://localhost:80
 ## ✍️ Api documentation <a name = "api"></a>
 
 ---
+For how to use the application checkout this api docs [Sales Management System documentation](https://documenter.getpostman.com/view/23171948/2sA3Bt2VCk)
+
+
 ## 🎈 concepts and patterns used <a name = "concepts"></a>
 - DTO design pattern
 - Service design pattern
@@ -79,3 +86,6 @@ the application will be available at [http://localhost:8080](http://localhost:80
 - input validation using spring validation
 - filtering using spring specification
 - pagination using spring pageable
+- logout and refresh token
+- seeding the database
+- global exception Handling using rest advice controller
