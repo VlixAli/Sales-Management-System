@@ -27,15 +27,19 @@
 - [spring security](https://spring.io/projects/spring-security)
 - [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
 - [JWT](https://jwt.io/)
+- [Junit](https://junit.org/junit5/) - testing framework
+- [Mockito](https://site.mockito.org/) - mocking framework
+- [H2](https://www.h2database.com/html/main.html) - lightweight in memory database for testing
 
 ## 🧐Features <a name = "features"></a>
 
 ---
 - Login and Registration with JWT
-- endpoints for retrieving all actions and search them using some request parameters(username, be, application, traceId, param, paramTypeEn)
+- endpoint for retrieving all actions and search them using some request parameters(username, be, application, traceId, param, paramTypeEn)
 - You can also paginate them using (pageNo, sort(ASC or DESC), sortByColumn(column within the actionRequest) )
 - 4 endpoints to retrieve, create, update and delete actions
 - 2 endpoints for logout and refreshToken
+- unit tests for ActionRepository and ActionService
 
 ## 🔧Requirements <a name = "requirements"></a>
 
@@ -89,3 +93,4 @@ For how to use the application checkout this api docs [Sales Management System d
 - logout and refresh token
 - seeding the database
 - global exception Handling using rest advice controller
+- unit tests using Junit and mockito
