@@ -48,7 +48,7 @@
 ## 🚀 Installation Steps <a name = "installation"></a>
 
 ---
-First clone this repository, install the dependencies, and setup your .env file.
+First clone this repository, install the dependencies, and set up your .env file.
 
 ````
 git clone https://github.com/VlixAli/Jwt-with-spring-
