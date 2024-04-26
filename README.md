@@ -51,7 +51,7 @@
 First clone this repository, install the dependencies, and set up your .env file.
 
 ````
-git clone https://github.com/VlixAli/Jwt-with-spring-
+git clone https://github.com/VlixAli/Sales-Management-System.git
 mvn clean install
 cd src/main/resources
 cp .env.example .env
