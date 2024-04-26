@@ -105,9 +105,12 @@ public class DatabaseSeeder implements WebMvcConfigurer {
             List<Action> actions = new ArrayList<>();
             long traceId = 100;
             for (long i = 1; i <= 10; i++) {
+
+                String name1 = faker.name().firstName();
+                String product1 = faker.commerce().productName();
                 Action action1 = Action.builder()
-                        .descriptionAr(" المستخدم hany قام برد الطلب " + traceId + "الذي تم انشائه بواسطة العميل: ali")
-                        .descriptionEn(" User hany refunded order " + traceId + " created by customer: ali")
+                        .descriptionAr(product1 + " لشراء المنتج " + traceId + "  قام بانشاء طلب " + name1 + "العميل ")
+                        .descriptionEn("customer " + name1 + " created order " + traceId + " to buy product " + product1)
                         .actionTime(new Timestamp(System.currentTimeMillis()))
                         .traceId(Long.toString(traceId))
                         .user(jerry)
@@ -119,9 +122,10 @@ public class DatabaseSeeder implements WebMvcConfigurer {
 
                 traceId++;
 
+                String name2 = faker.name().firstName();
                 Action action2 = Action.builder()
-                        .descriptionAr(" المستخدم hany قام برد الطلب " + traceId + "الذي تم انشائه بواسطة العميل: ali")
-                        .descriptionEn(" User hany refunded order " + traceId + " created by customer: ali")
+                        .descriptionAr( name2 + " الذي تم انشائه بواسطة العميل: " + traceId + " قام برد الطلب " + george.getFirstName() + " المستخدم ")
+                        .descriptionEn(" User " + george.getFirstName() + " refunded order " + traceId + " created by customer: " + name2)
                         .actionTime(new Timestamp(System.currentTimeMillis()))
                         .traceId(Long.toString(traceId))
                         .user(george)
@@ -133,9 +137,10 @@ public class DatabaseSeeder implements WebMvcConfigurer {
 
                 traceId++;
 
+                String name3 = faker.name().firstName();
                 Action action3 = Action.builder()
-                        .descriptionAr(" المستخدم hany قام برد الطلب " + traceId + "الذي تم انشائه بواسطة العميل: ali")
-                        .descriptionEn(" User hany refunded order " + traceId + " created by customer: ali")
+                        .descriptionAr( name3 + " الذي تم انشائه بواسطة العميل: " + traceId + " قام برد الطلب " + jerry.getFirstName() + " المستخدم ")
+                        .descriptionEn(" User " + jerry.getFirstName() + " refunded order " + traceId + " created by customer: " + name3)
                         .actionTime(new Timestamp(System.currentTimeMillis()))
                         .traceId(Long.toString(traceId))
                         .user(jerry)
@@ -148,12 +153,12 @@ public class DatabaseSeeder implements WebMvcConfigurer {
                 traceId++;
 
                 Param param1 = Param.builder()
-                        .value(faker.name().firstName())
+                        .value(name1)
                         .action(action1)
                         .paramType(customer)
                         .build();
                 Param param2 = Param.builder()
-                        .value(faker.commerce().productName())
+                        .value(product1)
                         .action(action1)
                         .paramType(product)
                         .build();
@@ -166,7 +171,7 @@ public class DatabaseSeeder implements WebMvcConfigurer {
                 action1.setParams(List.of(param1, param2, param3));
 
                 Param param4 = Param.builder()
-                        .value(faker.name().firstName())
+                        .value(name2)
                         .action(action2)
                         .paramType(customer)
                         .build();
@@ -178,7 +183,7 @@ public class DatabaseSeeder implements WebMvcConfigurer {
                 action2.setParams(List.of(param4, param5));
 
                 Param param6 = Param.builder()
-                        .value(faker.name().firstName())
+                        .value(name3)
                         .action(action3)
                         .paramType(customer)
                         .build();
