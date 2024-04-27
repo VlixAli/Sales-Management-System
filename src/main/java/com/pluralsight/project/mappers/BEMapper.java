@@ -1,5 +1,6 @@
 package com.pluralsight.project.mappers;
 
+import com.pluralsight.project.dtos.requests.BERequest;
 import com.pluralsight.project.dtos.responses.BEResponse;
 import com.pluralsight.project.models.BE;
 import org.mapstruct.Mapper;
@@ -12,5 +13,7 @@ public interface BEMapper {
     List<BEResponse> listBEResponse(List<BE> bes);
 
     BEResponse BEToBEResponse(BE be);
+
+    BE BERequestToBE(BERequest beRequest);
 
 }
