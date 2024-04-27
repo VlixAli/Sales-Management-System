@@ -10,5 +10,5 @@ import java.util.List;
 public interface ParamMapper {
 
     List<ParamResponse> listParamResponse(List<Param> params);
-    ParamResponse ParamToParamResponse(Param param);
+    ParamResponse paramToParamResponse(Param param);
 }
