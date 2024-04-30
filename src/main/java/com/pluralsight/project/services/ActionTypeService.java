@@ -2,10 +2,10 @@ package com.pluralsight.project.services;
 
 import com.pluralsight.project.dtos.requests.ActionTypeRequest;
 import com.pluralsight.project.dtos.responses.ActionTypeResponse;
+import com.pluralsight.project.exceptions.ResourceNotFoundException;
 import com.pluralsight.project.mappers.ActionTypeMapper;
 import com.pluralsight.project.models.ActionType;
 import com.pluralsight.project.repositories.ActionTypeRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,7 @@ public class ActionTypeService {
     public ActionTypeResponse update(Long id, ActionTypeRequest actionTypeRequest) {
         Optional<ActionType> optionalActionType = actionTypeRepository.findById(id);
         if (optionalActionType.isEmpty()) {
-            throw new EntityNotFoundException();
+            throw new ResourceNotFoundException("Action type");
         }
         ActionType actionType = optionalActionType.get();
         updateVariables(actionType, actionTypeRequest);
@@ -43,7 +43,7 @@ public class ActionTypeService {
 
     public void delete(Long id) {
         if (actionTypeRepository.findById(id).isEmpty()) {
-            throw new EntityNotFoundException();
+            throw new ResourceNotFoundException("Action type");
         }
         actionTypeRepository.deleteById(id);
     }

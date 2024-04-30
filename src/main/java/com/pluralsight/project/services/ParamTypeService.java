@@ -2,10 +2,10 @@ package com.pluralsight.project.services;
 
 import com.pluralsight.project.dtos.requests.ParamTypeRequest;
 import com.pluralsight.project.dtos.responses.ParamTypeResponse;
+import com.pluralsight.project.exceptions.ResourceNotFoundException;
 import com.pluralsight.project.mappers.ParamTypeMapper;
 import com.pluralsight.project.models.ParamType;
 import com.pluralsight.project.repositories.ParamTypeRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,7 @@ public class ParamTypeService {
     public ParamTypeResponse update(Long id,ParamTypeRequest paramTypeRequest){
         Optional<ParamType> optionalParamType = paramTypeRepository.findById(id);
         if (optionalParamType.isEmpty()){
-            throw new EntityNotFoundException();
+            throw new ResourceNotFoundException("Param type");
         }
         ParamType paramType = optionalParamType.get();
         updateVariables(paramType, paramTypeRequest);
@@ -43,7 +43,7 @@ public class ParamTypeService {
 
     public void delete(Long id){
         if (paramTypeRepository.findById(id).isEmpty()){
-            throw new EntityNotFoundException();
+            throw new ResourceNotFoundException("Param type");
         }
         paramTypeRepository.deleteById(id);
     }

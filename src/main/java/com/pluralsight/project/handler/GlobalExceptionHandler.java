@@ -1,5 +1,7 @@
 package com.pluralsight.project.handler;
 
+import com.pluralsight.project.dtos.responses.ErrorResponse;
+import com.pluralsight.project.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,6 +23,12 @@ public class GlobalExceptionHandler {
        });
 
        return errorMap;
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleEntityNotFoundException(ResourceNotFoundException exception){
+        return new ErrorResponse(exception.getName() + " not found");
     }
 
 }

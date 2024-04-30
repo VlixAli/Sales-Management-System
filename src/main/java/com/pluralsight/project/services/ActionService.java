@@ -3,6 +3,7 @@ package com.pluralsight.project.services;
 import com.pluralsight.project.dtos.requests.ActionRequest;
 import com.pluralsight.project.dtos.requests.ParamRequest;
 import com.pluralsight.project.dtos.responses.ActionResponse;
+import com.pluralsight.project.exceptions.ResourceNotFoundException;
 import com.pluralsight.project.mappers.ActionMapper;
 import com.pluralsight.project.models.Action;
 import com.pluralsight.project.models.Param;
@@ -48,7 +49,7 @@ public class ActionService {
     public ActionResponse findById(Long id) {
         Optional<Action> action = actionRepository.findById(id);
         if (action.isEmpty()) {
-            return null;
+            throw new ResourceNotFoundException("Action");
         }
         return actionMapper.actionToActionResponse(action.get());
     }
@@ -62,7 +63,7 @@ public class ActionService {
     public ActionResponse update(Long id, ActionRequest actionRequest) {
         Optional<Action> existingAction = actionRepository.findById(id);
         if (existingAction.isEmpty()) {
-            return null;
+            throw new ResourceNotFoundException("Action");
         }
         Action action = existingAction.get();
         updateActionRequestToAction(action, actionRequest);
@@ -71,6 +72,9 @@ public class ActionService {
     }
 
     public void delete(Long id) {
+        if (actionRepository.findById(id).isEmpty()) {
+            throw new ResourceNotFoundException("Action");
+        }
         actionRepository.deleteById(id);
     }
 

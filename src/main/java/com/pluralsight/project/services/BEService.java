@@ -2,10 +2,10 @@ package com.pluralsight.project.services;
 
 import com.pluralsight.project.dtos.requests.BERequest;
 import com.pluralsight.project.dtos.responses.BEResponse;
+import com.pluralsight.project.exceptions.ResourceNotFoundException;
 import com.pluralsight.project.mappers.BEMapper;
 import com.pluralsight.project.models.BE;
 import com.pluralsight.project.repositories.BERepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,19 +31,19 @@ public class BEService {
         return beMapper.BEToBEResponse(be);
     }
 
-    public BEResponse update(Long id,BERequest beRequest){
+    public BEResponse update(Long id, BERequest beRequest) {
         Optional<BE> optionalBE = beRepository.findById(id);
-        if (optionalBE.isEmpty()){
-            throw new EntityNotFoundException();
+        if (optionalBE.isEmpty()) {
+            throw new ResourceNotFoundException("Business entity");
         }
         BE be = optionalBE.get();
         be.setName(beRequest.getName());
         return beMapper.BEToBEResponse(beRepository.save(be));
     }
 
-    public void delete(Long id){
-        if (beRepository.findById(id).isEmpty()){
-            throw new EntityNotFoundException();
+    public void delete(Long id) {
+        if (beRepository.findById(id).isEmpty()) {
+            throw new ResourceNotFoundException("Business entity");
         }
         beRepository.deleteById(id);
     }
