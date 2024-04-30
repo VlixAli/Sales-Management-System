@@ -71,9 +71,12 @@ cd ../../../
 mvn spring-boot:run
 ````
 
-the application will be available at [http://localhost:8080](http://localhost:8080)
+- the application will be available at [http://localhost:8080](http://localhost:8080)
+- for login use [http://localhost:8080/api/v1/auth/login](http://localhost:8080/api/v1/auth/login) with the following credentials : 
+- email : jerry@gmail.com
+- password : password
 
-
+note : you can use the user 2 generated users emails with the same password
 
 
 ## ✍️ Api documentation <a name = "api"></a>
