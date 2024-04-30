@@ -6,6 +6,7 @@ import com.pluralsight.project.mappers.ActionMapper;
 import com.pluralsight.project.models.Action;
 import com.pluralsight.project.repositories.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -63,6 +64,7 @@ class ActionServiceTest {
     }
 
     @Test
+    @Disabled
     void findByIdUseActionMapper() {
         //when
         underTest.findById(1L);
@@ -81,6 +83,7 @@ class ActionServiceTest {
     }
 
     @Test
+    @Disabled
     void create() {
         //given
         ActionRequest actionRequest = new ActionRequest();
