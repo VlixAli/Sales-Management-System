@@ -35,18 +35,21 @@
 
 ---
 - Login and Registration with JWT
-- endpoint for retrieving all actions and search them using some request parameters(username, be, application, traceId, param, paramTypeEn)
+- Endpoint for retrieving all actions and search them using some request parameters(username, be, application, traceId, param, paramTypeEn)
 - You can also paginate them using (pageNo, sort(ASC or DESC), sortByColumn(column within the actionRequest) )
 - 4 endpoints to retrieve, create, update and delete actions
 - 2 endpoints for logout and refreshToken
-- unit tests for ActionRepository and ActionService
+- Unit tests for ActionRepository, ActionService and ApplicationService
+- Endpoints to get all, create, update and delete applications, business entities, param types and Action types
+- Input validation 
+- Exception handling
 
 ## 🔧Requirements <a name = "requirements"></a>
 
 ---
-- java => 17
-- spring boot => 3.2.3
-- maven
+- Java => 17
+- Spring boot => 3.2.3
+- Maven
 - MySQL
 
 ## 🚀 Installation Steps <a name = "installation"></a>
@@ -85,12 +88,14 @@ For how to use the application checkout this api docs [Sales Management System d
 - Repository design pattern
 - Dependency injection
 - JWT Authentication
-- spring security
-- spring data jpa
-- input validation using spring validation
-- filtering using spring specification
-- pagination using spring pageable
-- logout and refresh token
-- seeding the database
-- global exception Handling using rest advice controller
-- unit tests using Junit and mockito
+- Spring security
+- Spring data jpa
+- Input validation using spring validation
+- Filtering using spring specification
+- Pagination using spring pageable
+- Logout and refresh token
+- Seeding the database
+- Global exception Handling using rest advice controller
+- Unit tests using Junit and mockito
+- Custom exception
+- Custom Validation annotations
