@@ -3,7 +3,6 @@
 </p>
 
 ---
-### (Not completed)
 <li> Welcome to Sales Management System, here user can create, update and delete actions and search them based on specific search criteria</li>
 
 ##  📝Table of content
