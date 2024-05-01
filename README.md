@@ -14,7 +14,6 @@
 - [Installation Steps](#installation).
 - [Api documentation](#api).
 - [concepts and patterns used](#concepts).
-- [Acknowledgements](#acknowledgements).
 
 
 ## ⛏️ Built Using <a name = "built"></a>
