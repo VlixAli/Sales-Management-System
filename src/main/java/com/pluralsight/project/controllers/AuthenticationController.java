@@ -33,7 +33,7 @@ public class AuthenticationController {
             return ResponseEntity.ok(authenticationService.login(request));
         } catch (Exception e){
             return ResponseEntity.badRequest()
-                    .body(new ErrorResponse("Bad credentials"));
+                    .body(new ErrorResponse("Username / Password Incorrect"));
         }
     }
 
