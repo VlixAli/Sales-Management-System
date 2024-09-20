@@ -1,13 +1,12 @@
 package com.pluralsight.project.models;
 
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
 import java.util.List;
 
 @Data
@@ -20,8 +19,7 @@ public class ParamType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Column(name = "name_en")
+    @Column(name = "name_en", nullable = false)
     private String nameEn ;
 
     @Column(name = "name_ar")

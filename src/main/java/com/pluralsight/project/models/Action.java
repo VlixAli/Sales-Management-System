@@ -42,13 +42,11 @@ public class Action {
     private String traceId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @NotNull
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "action_type_id", referencedColumnName = "id")
-    @NotNull
+    @JoinColumn(name = "action_type_id", referencedColumnName = "id", nullable = false)
     private ActionType actionType;
 
     @ManyToOne

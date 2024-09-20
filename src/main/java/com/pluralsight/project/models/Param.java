@@ -1,7 +1,6 @@
 package com.pluralsight.project.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,17 +17,15 @@ public class Param {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @Column(nullable = false)
     private String value;
 
     @ManyToOne
-    @JoinColumn(name = "action_id", referencedColumnName = "id")
-    @NotNull
+    @JoinColumn(name = "action_id", referencedColumnName = "id", nullable = false)
     private Action action;
 
     @ManyToOne
-    @JoinColumn(name = "param_type_id", referencedColumnName = "id")
-    @NotNull
+    @JoinColumn(name = "param_type_id", referencedColumnName = "id", nullable = false)
     private ParamType paramType;
 
 }

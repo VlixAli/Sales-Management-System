@@ -2,7 +2,6 @@ package com.pluralsight.project.models;
 
 import com.pluralsight.project.models.enums.TokenType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,21 +18,20 @@ public class Token {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private String token;
+    @Column(name = "token_value", nullable = false)
+    private String tokenValue;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @Column(name = "token_type", nullable = false)
     private TokenType tokenType;
 
-    @NotNull
+    @Column(nullable = false)
     private boolean expired;
 
-    @NotNull
+    @Column(nullable = false)
     private boolean revoked;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @NotNull
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 }
