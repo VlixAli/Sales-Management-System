@@ -1,5 +1,6 @@
 package com.pluralsight.project.config;
 
+import com.pluralsight.project.constants.StringConstants;
 import com.pluralsight.project.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +23,7 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException(StringConstants.USER_NOT_FOUND));
     }
 
     @Bean

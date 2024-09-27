@@ -1,5 +1,6 @@
 package com.pluralsight.project.services;
 
+import com.pluralsight.project.constants.StringConstants;
 import com.pluralsight.project.repositories.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,19 +17,12 @@ public class LogoutService implements LogoutHandler {
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        final String authHeader = request.getHeader("Authorization");
+        final String authHeader = request.getHeader(StringConstants.AUTHORIZATION);
         final String jwt;
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith(StringConstants.BEARER)) {
             return;
         }
         jwt = authHeader.substring(7);
-        var storedToken = tokenRepository.findByToken(jwt)
-                .orElse(null);
-        if (storedToken != null) {
-//            storedToken.setExpired(true);
-//            storedToken.setRevoked(true);
-//            tokenRepository.save(storedToken);
-            tokenRepository.delete(storedToken);
-        }
+        tokenRepository.findByToken(jwt).ifPresent(tokenRepository::delete);
     }
 }

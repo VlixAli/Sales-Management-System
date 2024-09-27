@@ -79,7 +79,7 @@ public class ActionService {
                 () -> new EntityNotFoundException(StringConstants.APPLICATION_NOT_FOUND)
         ));
         action.setBe(beRepository.findById(actionRequest.getBeId()).orElseThrow(
-                () -> new EntityNotFoundException(StringConstants.BE_NOT_FOUND)
+                () -> new EntityNotFoundException(StringConstants.BUSINESS_ENTITY_NOT_FOUND)
         ));
         action.setParams(addParamsToAction(actionRequest.getParams(), action));
     }
@@ -116,7 +116,7 @@ public class ActionService {
         }
         if (actionRequest.getBeId() != null) {
             action.setBe(beRepository.findById(actionRequest.getBeId()).orElseThrow(
-                    () -> new EntityNotFoundException(StringConstants.BE_NOT_FOUND)
+                    () -> new EntityNotFoundException(StringConstants.BUSINESS_ENTITY_NOT_FOUND)
             ));
         }
         if (actionRequest.getParams() != null) {

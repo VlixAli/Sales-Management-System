@@ -12,9 +12,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class ActionRequest {
-
-
-
     private String descriptionAr ;
     private String descriptionEn ;
 
@@ -26,18 +23,18 @@ public class ActionRequest {
     @NotNull(message = "User Id must not be null", groups = Save.class)
     @Min(value = 1,message = "User Id must not be empty", groups = {Save.class, Update.class})
     @UserExists(groups = {Save.class, Update.class})
-    private Long user;
+    private Long userId;
 
     @NotNull(message = "Action Type Id must not be null", groups = Save.class)
     @Min(value = 1,message = "Action Type Id must not be empty", groups = {Save.class, Update.class})
     @ActionTypeExists(groups = {Save.class, Update.class})
-    private Long actionType;
+    private Long actionTypeId;
 
     @ApplicationExists(groups = {Save.class, Update.class})
-    private Long application;
+    private Long applicationId;
 
     @BEExists(groups = {Save.class, Update.class})
-    private Long be;
+    private Long beId;
 
     private List<ParamRequest> params;
 

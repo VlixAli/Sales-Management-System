@@ -1,7 +1,7 @@
 package com.pluralsight.project.handler;
 
 import com.pluralsight.project.dtos.responses.ErrorResponse;
-import com.pluralsight.project.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,19 +16,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleMethodArgumentException(MethodArgumentNotValidException exception){
-       Map<String, String> errorMap = new HashMap<>();
-       exception.getBindingResult().getFieldErrors().forEach(error -> {
-           errorMap.put(error.getField(), error.getDefaultMessage());
-       });
-
-       return errorMap;
+    public Map<String, String> handleMethodArgumentException(MethodArgumentNotValidException exception) {
+        Map<String, String> errorMap = new HashMap<>();
+        exception.getBindingResult().getFieldErrors().forEach(error ->
+                errorMap.put(error.getField(), error.getDefaultMessage()));
+        return errorMap;
     }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
+    @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleEntityNotFoundException(ResourceNotFoundException exception){
-        return new ErrorResponse(exception.getName() + " not found");
+    public ErrorResponse handleEntityNotFoundException(EntityNotFoundException exception) {
+        return new ErrorResponse(exception.getMessage());
     }
-
 }

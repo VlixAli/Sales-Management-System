@@ -1,6 +1,7 @@
 package com.pluralsight.project.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pluralsight.project.constants.StringConstants;
 import com.pluralsight.project.dtos.requests.LoginRequest;
 import com.pluralsight.project.dtos.requests.RegisterRequest;
 import com.pluralsight.project.dtos.responses.AuthenticationResponse;
@@ -76,18 +77,13 @@ public class AuthenticationService {
         var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
         if (validUserTokens.isEmpty())
             return;
-//        validUserTokens.forEach(t -> {
-//            t.setRevoked(true);
-//            t.setExpired(true);
-//        });
-//        tokenRepository.saveAll(validUserTokens);
         tokenRepository.deleteAll(validUserTokens);
     }
 
     private void saveUserToken(User user, String jwtToken) {
         var token = Token.builder()
                 .user(user)
-                .token(jwtToken)
+                .tokenValue(jwtToken)
                 .tokenType(TokenType.BEARER)
                 .revoked(false)
                 .expired(false)
@@ -99,7 +95,7 @@ public class AuthenticationService {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userEmail;
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith(StringConstants.BEARER)) {
             return;
         }
         refreshToken = authHeader.substring(7);

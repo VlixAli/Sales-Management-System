@@ -1,5 +1,6 @@
 package com.pluralsight.project.controllers;
 
+import com.pluralsight.project.constants.StringConstants;
 import com.pluralsight.project.dtos.requests.ActionTypeRequest;
 import com.pluralsight.project.dtos.responses.ActionTypeResponse;
 import com.pluralsight.project.services.ActionTypeService;
@@ -10,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -17,35 +19,30 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ActionTypeController {
 
-    private final ActionTypeService ActionTypeService;
+    private final ActionTypeService actionTypeService;
 
     @GetMapping
-    public ResponseEntity<?> index() {
-        return ResponseEntity.ok(ActionTypeService.findAll());
+    public ResponseEntity<List<ActionTypeResponse>> index() {
+        return ResponseEntity.ok(actionTypeService.findAll());
     }
 
     @PostMapping
-    public ResponseEntity<?> store(
-            @RequestBody @Validated(ActionTypeRequest.Save.class) ActionTypeRequest request) {
-        ActionTypeResponse response = ActionTypeService.create(request);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    public ResponseEntity<ActionTypeResponse> store(@RequestBody @Validated(ActionTypeRequest.Save.class) ActionTypeRequest request) {
+        return new ResponseEntity<>(actionTypeService.create(request), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ActionTypeResponse> update(
             @PathVariable Long id,
             @RequestBody @Validated(ActionTypeRequest.Update.class) ActionTypeRequest request) {
-        ActionTypeResponse response = ActionTypeService.update(id, request);
-        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(actionTypeService.update(id, request), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleted(@PathVariable Long id) {
-        ActionTypeService.delete(id);
+    public ResponseEntity<Map<String, String>> deleted(@PathVariable Long id) {
+        actionTypeService.delete(id);
         Map<String, String> response = new HashMap<>();
-        response.put("message", "Action type deleted successfully");
+        response.put(StringConstants.MESSAGE, StringConstants.ACTION_TYPE_DELETED_SUCCESSFULLY);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-
 }

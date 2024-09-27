@@ -1,5 +1,6 @@
 package com.pluralsight.project.dtos.responses;
 
+import com.pluralsight.project.constants.StringConstants;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -7,6 +8,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ErrorResponse {
 
-    private String status = "failed";
+    private String status = StringConstants.FAILED;
     private final String message;
 }

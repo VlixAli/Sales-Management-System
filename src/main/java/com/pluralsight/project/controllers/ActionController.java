@@ -1,5 +1,6 @@
 package com.pluralsight.project.controllers;
 
+import com.pluralsight.project.constants.StringConstants;
 import com.pluralsight.project.dtos.requests.ActionRequest;
 import com.pluralsight.project.dtos.requests.PageActionRequest;
 import com.pluralsight.project.dtos.responses.ActionResponse;
@@ -49,7 +50,7 @@ public class ActionController {
     public ResponseEntity<Map<String, String>> delete(@PathVariable Long id) {
         actionService.delete(id);
         Map<String, String> response = new HashMap<>();
-        response.put("message", "Action deleted successfully");
+        response.put(StringConstants.MESSAGE, StringConstants.ACTION_DELETED_SUCCESSFULLY);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
