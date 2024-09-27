@@ -1,7 +1,9 @@
 package com.pluralsight.project.controllers;
 
+import com.pluralsight.project.constants.StringConstants;
 import com.pluralsight.project.dtos.requests.LoginRequest;
 import com.pluralsight.project.dtos.requests.RegisterRequest;
+import com.pluralsight.project.dtos.responses.AuthenticationResponse;
 import com.pluralsight.project.dtos.responses.ErrorResponse;
 import com.pluralsight.project.services.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +25,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Validated RegisterRequest request) {
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody @Validated RegisterRequest request) {
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
@@ -33,7 +35,7 @@ public class AuthenticationController {
             return ResponseEntity.ok(authenticationService.login(request));
         } catch (Exception e){
             return ResponseEntity.badRequest()
-                    .body(new ErrorResponse("Username / Password Incorrect"));
+                    .body(new ErrorResponse(StringConstants.USERNAME_PASSWORD_INCORRECT));
         }
     }
 
