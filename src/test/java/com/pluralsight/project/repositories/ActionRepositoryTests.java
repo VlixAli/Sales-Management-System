@@ -14,7 +14,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import java.sql.Timestamp;
 
 @DataJpaTest
-class ActionRepositoryTest {
+class ActionRepositoryTests {
 
     @Autowired
     private ActionRepository underTest;
