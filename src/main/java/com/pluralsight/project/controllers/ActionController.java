@@ -2,12 +2,10 @@ package com.pluralsight.project.controllers;
 
 import com.pluralsight.project.dtos.requests.ActionRequest;
 import com.pluralsight.project.dtos.requests.PageActionRequest;
-import com.pluralsight.project.dtos.requests.PageRequestDto;
 import com.pluralsight.project.dtos.responses.ActionResponse;
 import com.pluralsight.project.services.ActionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -25,14 +23,7 @@ public class ActionController {
 
     @GetMapping
     public ResponseEntity<Page<ActionResponse>> index(@Validated PageActionRequest request) {
-        PageRequestDto pageRequestDto = new PageRequestDto(request.getPageNo(),
-                request.sortToDirection(request.getSort()), request.getSortByColumn());
-
-        Pageable pageable = new PageRequestDto().getPageable(pageRequestDto);
-
-        return ResponseEntity.ok(actionService.findAll(request.getUsername(), request.getBe(),
-                request.getApplication(), request.getTraceId(), request.getParam(),
-                request.getParamTypeEn(), pageable));
+        return ResponseEntity.ok(actionService.findAll(request));
     }
 
     @GetMapping("/{id}")
@@ -55,7 +46,7 @@ public class ActionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<Map<String, String>> delete(@PathVariable Long id) {
         actionService.delete(id);
         Map<String, String> response = new HashMap<>();
         response.put("message", "Action deleted successfully");

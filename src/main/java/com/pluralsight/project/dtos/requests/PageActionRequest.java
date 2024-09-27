@@ -2,7 +2,6 @@ package com.pluralsight.project.dtos.requests;
 
 import com.pluralsight.project.validations.annotations.InValues;
 import lombok.Data;
-import org.springframework.data.domain.Sort;
 
 @Data
 public class PageActionRequest {
@@ -23,17 +22,9 @@ public class PageActionRequest {
     private Integer pageNo;
 
     @InValues(value = {"ASC", "DESC"}, message = "the value must be either ASC or DESC")
-    private String sort;
+    private String sortDirection;
 
     @InValues(value = {"id", "descriptionAr", "descriptionEn", "actionTime", "traceId"},
             message = "the value must be in [id, descriptionAr, descriptionEn, actionTime, traceId]")
-    private String sortByColumn;
-
-    public Sort.Direction sortToDirection(String value) {
-        if (value == "DESC") {
-            return Sort.Direction.DESC;
-        } else {
-            return Sort.Direction.ASC;
-        }
-    }
+    private String sortColumn;
 }

@@ -1,13 +1,16 @@
 package com.pluralsight.project.services;
 
+import com.pluralsight.project.constants.StringConstants;
 import com.pluralsight.project.dtos.requests.ActionRequest;
+import com.pluralsight.project.dtos.requests.PageActionRequest;
 import com.pluralsight.project.dtos.requests.ParamRequest;
 import com.pluralsight.project.dtos.responses.ActionResponse;
-import com.pluralsight.project.exceptions.ResourceNotFoundException;
 import com.pluralsight.project.mappers.ActionMapper;
 import com.pluralsight.project.models.Action;
 import com.pluralsight.project.models.Param;
 import com.pluralsight.project.repositories.*;
+import com.pluralsight.project.utils.PageableMaker;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +20,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.pluralsight.project.specifications.ActionSpecification.*;
 
@@ -33,64 +35,53 @@ public class ActionService {
     private final BERepository beRepository;
     private final ParamTypeRepository paramTypeRepository;
 
-    public Page<ActionResponse> findAll(String username, String be, String application, Long traceId
-            , String param, String paramTypeEn, Pageable pageable) {
-        Specification<Action> filters =
-                Specification.where(StringUtils.hasLength(username) ? hasUser(username) : null)
-                        .and(StringUtils.hasLength(be) ? hasBE(be) : null)
-                        .and(StringUtils.hasLength(application) ? hasApplication(application) : null)
-                        .and(traceId != null ? hasAction(traceId) : null)
-                        .and(StringUtils.hasLength(param) ? hasParam(param) : null)
-                        .and(StringUtils.hasLength(paramTypeEn) ? hasParamType(paramTypeEn) : null);
-
-        return actionMapper.pageActionResponse(actionRepository.findAll(filters, pageable));
+    public Page<ActionResponse> findAll(PageActionRequest request) {
+        return actionMapper.pageActionToPageActionResponse(actionRepository.findAll(createFilters(request)
+                , createPageable(request)));
     }
 
     public ActionResponse findById(Long id) {
-        Optional<Action> action = actionRepository.findById(id);
-        if (action.isEmpty()) {
-            throw new ResourceNotFoundException("Action");
-        }
-        return actionMapper.actionToActionResponse(action.get());
+        return actionMapper.actionToActionResponse(actionRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(StringConstants.ACTION_NOT_FOUND)));
     }
 
     public ActionResponse create(ActionRequest actionRequest) {
-        Action action = actionRequestToAction(actionRequest);
+        Action action = actionMapper.actionRequestToAction(actionRequest);
+        mapIdsToTheirEntity(action, actionRequest);
         actionRepository.save(action);
         return actionMapper.actionToActionResponse(action);
     }
 
     public ActionResponse update(Long id, ActionRequest actionRequest) {
-        Optional<Action> existingAction = actionRepository.findById(id);
-        if (existingAction.isEmpty()) {
-            throw new ResourceNotFoundException("Action");
-        }
-        Action action = existingAction.get();
-        updateActionRequestToAction(action, actionRequest);
-
+        Action action = actionRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(StringConstants.ACTION_NOT_FOUND));
+        actionMapper.updateActionRequestToAction(action, actionRequest);
+        updateIdsToTheirEntities(action, actionRequest);
         return actionMapper.actionToActionResponse(actionRepository.save(action));
     }
 
     public void delete(Long id) {
         if (actionRepository.findById(id).isEmpty()) {
-            throw new ResourceNotFoundException("Action");
+            throw new EntityNotFoundException(StringConstants.ACTION_NOT_FOUND);
         }
         actionRepository.deleteById(id);
     }
 
 
-    private Action actionRequestToAction(ActionRequest actionRequest) {
-        Action action = new Action();
-        action.setDescriptionAr(actionRequest.getDescriptionAr());
-        action.setDescriptionEn(actionRequest.getDescriptionEn());
-        action.setTraceId(actionRequest.getTraceId());
-        action.setUser(userRepository.findById(actionRequest.getUser()).get());
-        action.setActionType(actionTypeRepository.findById(actionRequest.getActionType()).get());
-        action.setApplication(applicationRepository.findById(actionRequest.getApplication()).get());
-        action.setBe(beRepository.findById(actionRequest.getBe()).get());
+    private void mapIdsToTheirEntity(Action action,ActionRequest actionRequest) {
+        action.setUser(userRepository.findById(actionRequest.getUserId()).orElseThrow(
+                () -> new EntityNotFoundException(StringConstants.USER_NOT_FOUND)
+        ));
+        action.setActionType(actionTypeRepository.findById(actionRequest.getActionTypeId()).orElseThrow(
+                () -> new EntityNotFoundException(StringConstants.ACTION_TYPE_NOT_FOUND)
+        ));
+        action.setApplication(applicationRepository.findById(actionRequest.getApplicationId()).orElseThrow(
+                () -> new EntityNotFoundException(StringConstants.APPLICATION_NOT_FOUND)
+        ));
+        action.setBe(beRepository.findById(actionRequest.getBeId()).orElseThrow(
+                () -> new EntityNotFoundException(StringConstants.BE_NOT_FOUND)
+        ));
         action.setParams(addParamsToAction(actionRequest.getParams(), action));
-
-        return action;
     }
 
     private List<Param> addParamsToAction(List<ParamRequest> paramRequests, Action action) {
@@ -98,37 +89,51 @@ public class ActionService {
         for (ParamRequest paramRequest : paramRequests) {
             Param param = new Param();
             param.setValue(paramRequest.getValue());
-            param.setParamType(paramTypeRepository.findById(paramRequest.getParamType()).get());
+            param.setParamType(paramTypeRepository.findById(paramRequest.getParamType()).orElseThrow(
+                    () -> new EntityNotFoundException(StringConstants.PARAM_TYPE_NOT_FOUND)
+            ));
             param.setAction(action);
             params.add(param);
         }
         return params;
     }
 
-    private void updateActionRequestToAction(Action action, ActionRequest actionRequest) {
-        if (actionRequest.getDescriptionAr() != null) {
-            action.setDescriptionAr(actionRequest.getDescriptionAr());
+    private void updateIdsToTheirEntities(Action action, ActionRequest actionRequest) {
+        if (actionRequest.getUserId() != null) {
+            action.setUser(userRepository.findById(actionRequest.getUserId()).orElseThrow(
+                    () -> new EntityNotFoundException(StringConstants.USER_NOT_FOUND)
+            ));
         }
-        if (actionRequest.getDescriptionEn() != null) {
-            action.setDescriptionEn(actionRequest.getDescriptionEn());
+        if (actionRequest.getActionTypeId() != null) {
+            action.setActionType(actionTypeRepository.findById(actionRequest.getActionTypeId()).orElseThrow(
+                    () -> new EntityNotFoundException(StringConstants.ACTION_TYPE_NOT_FOUND)
+            ));
         }
-        if (actionRequest.getTraceId() != null) {
-            action.setTraceId(actionRequest.getTraceId());
+        if (actionRequest.getApplicationId() != null) {
+            action.setApplication(applicationRepository.findById(actionRequest.getApplicationId()).orElseThrow(
+                    () -> new EntityNotFoundException(StringConstants.APPLICATION_NOT_FOUND)
+            ));
         }
-        if (actionRequest.getUser() != null) {
-            action.setUser(userRepository.findById(actionRequest.getUser()).get());
-        }
-        if (actionRequest.getActionType() != null) {
-            action.setActionType(actionTypeRepository.findById(actionRequest.getActionType()).get());
-        }
-        if (actionRequest.getApplication() != null) {
-            action.setApplication(applicationRepository.findById(actionRequest.getApplication()).get());
-        }
-        if (actionRequest.getBe() != null) {
-            action.setBe(beRepository.findById(actionRequest.getBe()).get());
+        if (actionRequest.getBeId() != null) {
+            action.setBe(beRepository.findById(actionRequest.getBeId()).orElseThrow(
+                    () -> new EntityNotFoundException(StringConstants.BE_NOT_FOUND)
+            ));
         }
         if (actionRequest.getParams() != null) {
             action.setParams(addParamsToAction(actionRequest.getParams(), action));
         }
+    }
+
+    private Specification<Action> createFilters(PageActionRequest request) {
+        return Specification.where(StringUtils.hasLength(request.getUsername()) ? hasUser(request.getUsername()) : null)
+                .and(StringUtils.hasLength(request.getBe()) ? hasBE(request.getBe()) : null)
+                .and(StringUtils.hasLength(request.getApplication()) ? hasApplication(request.getApplication()) : null)
+                .and(request.getTraceId() != null ? hasAction(request.getTraceId()) : null)
+                .and(StringUtils.hasLength(request.getParam()) ? hasParam(request.getParam()) : null)
+                .and(StringUtils.hasLength(request.getParamTypeEn()) ? hasParamType(request.getParamTypeEn()) : null);
+    }
+
+    private Pageable createPageable(PageActionRequest request) {
+        return PageableMaker.createPageable(request.getPageNo(), request.getSortDirection(), request.getSortColumn());
     }
 }
