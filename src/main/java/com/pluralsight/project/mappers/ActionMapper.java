@@ -1,24 +1,24 @@
 package com.pluralsight.project.mappers;
 
+import com.pluralsight.project.dtos.requests.ActionRequest;
 import com.pluralsight.project.dtos.responses.ActionResponse;
 import com.pluralsight.project.models.Action;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public abstract class ActionMapper {
 
-    public abstract List<ActionResponse> listActionResponse(List<Action> actions);
-
     @Mapping(target = "actionId", source = "action.id")
     public abstract ActionResponse actionToActionResponse(Action action);
 
-    public Page<ActionResponse> pageActionResponse(Page<Action> actions){
-        return actions.map(action -> actionToActionResponse(action));
+    public Page<ActionResponse> pageActionToPageActionResponse(Page<Action> actions){
+        return actions.map(this::actionToActionResponse);
     }
+    @Mapping(target = "params", ignore = true)
+   public abstract Action actionRequestToAction(ActionRequest actionRequest);
 
-
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "params", ignore = true)
+    public abstract void updateActionRequestToAction(@MappingTarget Action action, ActionRequest actionRequest);
 }
