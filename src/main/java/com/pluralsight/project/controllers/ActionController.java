@@ -1,6 +1,5 @@
 package com.pluralsight.project.controllers;
 
-import com.pluralsight.project.constants.StringConstants;
 import com.pluralsight.project.dtos.requests.ActionRequest;
 import com.pluralsight.project.dtos.requests.PageActionRequest;
 import com.pluralsight.project.dtos.responses.ActionResponse;
@@ -12,11 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/v1/actions")
+@RequestMapping("/actions")
 @RequiredArgsConstructor
 public class ActionController {
 
@@ -29,28 +27,23 @@ public class ActionController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ActionResponse> show(@PathVariable Long id) {
-        ActionResponse actionResponse = actionService.findById(id);
-        return ResponseEntity.ok(actionResponse);
+        return ResponseEntity.ok(actionService.findById(id));
     }
 
     @PostMapping
     public ResponseEntity<ActionResponse> store(@RequestBody @Validated(ActionRequest.Save.class) ActionRequest actionRequest) {
-        ActionResponse actionResponse = actionService.create(actionRequest);
-        return new ResponseEntity<>(actionResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(actionService.create(actionRequest), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ActionResponse> update(@PathVariable Long id,
                                                  @RequestBody @Validated(ActionRequest.Update.class) ActionRequest actionRequest) {
-        ActionResponse actionResponse = actionService.update(id, actionRequest);
-        return ResponseEntity.ok(actionResponse);
+        return ResponseEntity.ok(actionService.update(id, actionRequest));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> delete(@PathVariable Long id) {
         actionService.delete(id);
-        Map<String, String> response = new HashMap<>();
-        response.put(StringConstants.MESSAGE, StringConstants.ACTION_DELETED_SUCCESSFULLY);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 }

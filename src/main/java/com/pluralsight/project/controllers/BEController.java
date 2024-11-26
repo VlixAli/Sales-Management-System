@@ -1,6 +1,5 @@
 package com.pluralsight.project.controllers;
 
-import com.pluralsight.project.constants.StringConstants;
 import com.pluralsight.project.dtos.requests.BERequest;
 import com.pluralsight.project.dtos.responses.BEResponse;
 import com.pluralsight.project.services.BEService;
@@ -10,12 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/v1/bes")
+@RequestMapping("/bes")
 @RequiredArgsConstructor
 public class BEController {
 
@@ -33,14 +31,12 @@ public class BEController {
 
     @PutMapping("/{id}")
     public ResponseEntity<BEResponse> update(@PathVariable Long id, @RequestBody @Validated BERequest request) {
-        return new ResponseEntity<>(beService.update(id, request), HttpStatus.ACCEPTED);
+        return ResponseEntity.ok(beService.update(id, request));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> deleted(@PathVariable Long id) {
         beService.delete(id);
-        Map<String, String> response = new HashMap<>();
-        response.put(StringConstants.MESSAGE, StringConstants.BUSINESS_ENTITY_DELETED_SUCCESSFULLY);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 }

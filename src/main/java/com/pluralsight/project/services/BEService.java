@@ -38,7 +38,7 @@ public class BEService {
             throw new EntityNotFoundException(StringConstants.BUSINESS_ENTITY_NOT_FOUND);
         }
         BE be = optionalBE.get();
-        be.setName(beRequest.getName());
+        be.setName(beRequest.name());
         return beMapper.BEToBEResponse(beRepository.save(be));
     }
 

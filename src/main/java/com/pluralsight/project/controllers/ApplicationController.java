@@ -1,6 +1,5 @@
 package com.pluralsight.project.controllers;
 
-import com.pluralsight.project.constants.StringConstants;
 import com.pluralsight.project.dtos.requests.ApplicationRequest;
 import com.pluralsight.project.dtos.responses.ApplicationResponse;
 import com.pluralsight.project.services.ApplicationService;
@@ -10,12 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/v1/applications")
+@RequestMapping("/applications")
 @RequiredArgsConstructor
 public class ApplicationController {
 
@@ -34,16 +32,12 @@ public class ApplicationController {
     @PutMapping("/{id}")
     public ResponseEntity<ApplicationResponse> update(@PathVariable Long id,
                                                       @RequestBody @Validated ApplicationRequest request) {
-        return new ResponseEntity<>(applicationService.update(id, request), HttpStatus.ACCEPTED);
+        return ResponseEntity.ok(applicationService.update(id, request));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> deleted(@PathVariable Long id) {
         applicationService.delete(id);
-        Map<String, String> response = new HashMap<>();
-        response.put(StringConstants.MESSAGE, StringConstants.APPLICATION_DELETED_SUCCESSFULLY);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
-
-
 }

@@ -1,11 +1,13 @@
 package com.pluralsight.project.services;
 
+import com.pluralsight.project.constants.StringConstants;
 import com.pluralsight.project.dtos.requests.ActionRequest;
 import com.pluralsight.project.dtos.requests.PageActionRequest;
 import com.pluralsight.project.dtos.responses.ActionResponse;
 import com.pluralsight.project.mappers.ActionMapper;
 import com.pluralsight.project.models.Action;
 import com.pluralsight.project.repositories.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -52,28 +55,28 @@ class ActionServiceTests {
     @InjectMocks
     private ActionService actionService;
 
-
     Action action;
-
+    ActionRequest actionRequest;
+    ActionResponse actionResponse;
 
     @BeforeEach
     void setUp() {
         action = new Action();
+        actionRequest = new ActionRequest();
+        actionResponse = new ActionResponse();
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    void findAll_Success() {
+    void findAll_ReturnPageOFAllActions() {
         Page<Action> actions = new PageImpl<>(new ArrayList<>());
         Page<ActionResponse> actionResponses = new PageImpl<>(new ArrayList<>());
         PageActionRequest pageActionRequest = new PageActionRequest();
         when(actionRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(actions);
         when(actionMapper.pageActionToPageActionResponse(actions)).thenReturn(actionResponses);
 
-        //when
         Page<ActionResponse> response = actionService.findAll(pageActionRequest);
 
-        //then
         verify(actionRepository, times(1)).findAll(any(Specification.class), any(Pageable.class));
         verify(actionMapper, times(1)).pageActionToPageActionResponse(actions);
         assertNotNull(response);
@@ -88,37 +91,30 @@ class ActionServiceTests {
     }
 
     @Test
-    @Disabled
-    void findByIdUseActionMapper() {
-        //when
-        actionService.findById(1L);
-
-        //then
-        verify(actionMapper).actionToActionResponse(actionRepository.findById(1L).orElse(new Action()));
+    void findById_existingAction_returnsAction() {
+        when(actionRepository.findById(1L)).thenReturn(Optional.of(action));
+        when(actionMapper.actionToActionResponse(action)).thenReturn(actionResponse);
+        ActionResponse result = actionService.findById(1L);
+        assertNotNull(result);
+        assertEquals(actionResponse, result);
     }
 
     @Test
-    void findById() {
-        //when
-        actionService.findById(1L);
-
-        //then
-        verify(actionRepository).findById(1L);
+    void findById_nonExistingAction_ThrowsEntityNotFoundException() {
+        when(actionRepository.findById(1L)).thenReturn(Optional.empty());
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> actionService.findById(1L));
+        verify(actionRepository, times(1)).findById(1L);
+        assertEquals(StringConstants.ACTION_NOT_FOUND, exception.getMessage());
     }
 
     @Test
-    @Disabled
-    void create() {
-        //given
-        ActionRequest actionRequest = new ActionRequest();
-        Action action = new Action();
-
-        //when
-        actionService.create(actionRequest);
-
-        //then
-        verify(actionRepository.save(action));
-
+    void createAction_returnsActionResponse() {
+        when(actionMapper.actionRequestToAction(actionRequest)).thenReturn(action);
+        when(actionRepository.save(action)).thenReturn(action);
+        when(actionMapper.actionToActionResponse(action)).thenReturn(actionResponse);
+        ActionResponse result = actionService.create(actionRequest);
+        assertNotNull(result);
+        assertEquals(actionResponse, result);
     }
 
     @Test

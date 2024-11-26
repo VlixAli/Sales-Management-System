@@ -6,8 +6,8 @@ import com.pluralsight.project.dtos.requests.LoginRequest;
 import com.pluralsight.project.dtos.requests.RegisterRequest;
 import com.pluralsight.project.dtos.responses.AuthenticationResponse;
 import com.pluralsight.project.models.Token;
-import com.pluralsight.project.models.enums.Role;
 import com.pluralsight.project.models.User;
+import com.pluralsight.project.models.enums.Role;
 import com.pluralsight.project.models.enums.TokenType;
 import com.pluralsight.project.repositories.TokenRepository;
 import com.pluralsight.project.repositories.UserRepository;
@@ -38,10 +38,10 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
-                .firstName(request.getFirstname())
-                .lastName(request.getLastname())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
+                .firstName(request.firstname())
+                .lastName(request.lastname())
+                .email(request.email())
+                .password(passwordEncoder.encode(request.password()))
                 .role(Role.USER)
                 .build();
         var savedUser = userRepository.save(user);
@@ -57,11 +57,11 @@ public class AuthenticationService {
     public AuthenticationResponse login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
+                        request.email(),
+                        request.password()
                 )
         );
-        var user = userRepository.findByEmail(request.getEmail())
+        var user = userRepository.findByEmail(request.email())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
@@ -107,11 +107,11 @@ public class AuthenticationService {
                 var accessToken = jwtService.generateToken(user);
                 revokeAllUserTokens(user);
                 saveUserToken(user, accessToken);
-                var authResponse =AuthenticationResponse.builder()
+                var authResponse = AuthenticationResponse.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
                         .build();
-                        new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
+                new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
         }
     }

@@ -27,23 +27,22 @@ public class ApplicationService {
     public ApplicationResponse create(ApplicationRequest applicationRequest) {
         Application application =
                 applicationMapper.applicationRequestToApplication(applicationRequest);
-
         applicationRepository.save(application);
         return applicationMapper.applicationToApplicationResponse(application);
     }
 
-    public ApplicationResponse update(Long id,ApplicationRequest applicationRequest){
+    public ApplicationResponse update(Long id, ApplicationRequest applicationRequest) {
         Optional<Application> optionalApplication = applicationRepository.findById(id);
-        if (optionalApplication.isEmpty()){
+        if (optionalApplication.isEmpty()) {
             throw new EntityNotFoundException(StringConstants.APPLICATION_NOT_FOUND);
         }
         Application application = optionalApplication.get();
-        application.setName(applicationRequest.getName());
+        application.setName(applicationRequest.name());
         return applicationMapper.applicationToApplicationResponse(applicationRepository.save(application));
     }
 
-    public void delete(Long id){
-        if (applicationRepository.findById(id).isEmpty()){
+    public void delete(Long id) {
+        if (applicationRepository.findById(id).isEmpty()) {
             throw new EntityNotFoundException(StringConstants.APPLICATION_NOT_FOUND);
         }
         applicationRepository.deleteById(id);

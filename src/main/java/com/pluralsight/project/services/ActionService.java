@@ -68,28 +68,28 @@ public class ActionService {
     }
 
 
-    private void mapIdsToTheirEntity(Action action,ActionRequest actionRequest) {
-        action.setUser(userRepository.findById(actionRequest.getUserId()).orElseThrow(
+    private void mapIdsToTheirEntity(Action action, ActionRequest actionRequest) {
+        action.setUser(userRepository.findById(actionRequest.userId()).orElseThrow(
                 () -> new EntityNotFoundException(StringConstants.USER_NOT_FOUND)
         ));
-        action.setActionType(actionTypeRepository.findById(actionRequest.getActionTypeId()).orElseThrow(
+        action.setActionType(actionTypeRepository.findById(actionRequest.actionTypeId()).orElseThrow(
                 () -> new EntityNotFoundException(StringConstants.ACTION_TYPE_NOT_FOUND)
         ));
-        action.setApplication(applicationRepository.findById(actionRequest.getApplicationId()).orElseThrow(
+        action.setApplication(applicationRepository.findById(actionRequest.applicationId()).orElseThrow(
                 () -> new EntityNotFoundException(StringConstants.APPLICATION_NOT_FOUND)
         ));
-        action.setBe(beRepository.findById(actionRequest.getBeId()).orElseThrow(
+        action.setBe(beRepository.findById(actionRequest.beId()).orElseThrow(
                 () -> new EntityNotFoundException(StringConstants.BUSINESS_ENTITY_NOT_FOUND)
         ));
-        action.setParams(addParamsToAction(actionRequest.getParams(), action));
+        action.setParams(addParamsToAction(actionRequest.params(), action));
     }
 
     private List<Param> addParamsToAction(List<ParamRequest> paramRequests, Action action) {
         List<Param> params = new ArrayList<>();
         for (ParamRequest paramRequest : paramRequests) {
             Param param = new Param();
-            param.setValue(paramRequest.getValue());
-            param.setParamType(paramTypeRepository.findById(paramRequest.getParamType()).orElseThrow(
+            param.setValue(paramRequest.value());
+            param.setParamType(paramTypeRepository.findById(paramRequest.paramType()).orElseThrow(
                     () -> new EntityNotFoundException(StringConstants.PARAM_TYPE_NOT_FOUND)
             ));
             param.setAction(action);
@@ -99,41 +99,41 @@ public class ActionService {
     }
 
     private void updateIdsToTheirEntities(Action action, ActionRequest actionRequest) {
-        if (actionRequest.getUserId() != null) {
-            action.setUser(userRepository.findById(actionRequest.getUserId()).orElseThrow(
+        if (actionRequest.userId() != null) {
+            action.setUser(userRepository.findById(actionRequest.userId()).orElseThrow(
                     () -> new EntityNotFoundException(StringConstants.USER_NOT_FOUND)
             ));
         }
-        if (actionRequest.getActionTypeId() != null) {
-            action.setActionType(actionTypeRepository.findById(actionRequest.getActionTypeId()).orElseThrow(
+        if (actionRequest.actionTypeId() != null) {
+            action.setActionType(actionTypeRepository.findById(actionRequest.actionTypeId()).orElseThrow(
                     () -> new EntityNotFoundException(StringConstants.ACTION_TYPE_NOT_FOUND)
             ));
         }
-        if (actionRequest.getApplicationId() != null) {
-            action.setApplication(applicationRepository.findById(actionRequest.getApplicationId()).orElseThrow(
+        if (actionRequest.applicationId() != null) {
+            action.setApplication(applicationRepository.findById(actionRequest.applicationId()).orElseThrow(
                     () -> new EntityNotFoundException(StringConstants.APPLICATION_NOT_FOUND)
             ));
         }
-        if (actionRequest.getBeId() != null) {
-            action.setBe(beRepository.findById(actionRequest.getBeId()).orElseThrow(
+        if (actionRequest.beId() != null) {
+            action.setBe(beRepository.findById(actionRequest.beId()).orElseThrow(
                     () -> new EntityNotFoundException(StringConstants.BUSINESS_ENTITY_NOT_FOUND)
             ));
         }
-        if (actionRequest.getParams() != null) {
-            action.setParams(addParamsToAction(actionRequest.getParams(), action));
+        if (actionRequest.params() != null) {
+            action.setParams(addParamsToAction(actionRequest.params(), action));
         }
     }
 
     private Specification<Action> createFilters(PageActionRequest request) {
-        return Specification.where(StringUtils.hasLength(request.getUsername()) ? hasUser(request.getUsername()) : null)
-                .and(StringUtils.hasLength(request.getBe()) ? hasBE(request.getBe()) : null)
-                .and(StringUtils.hasLength(request.getApplication()) ? hasApplication(request.getApplication()) : null)
-                .and(request.getTraceId() != null ? hasAction(request.getTraceId()) : null)
-                .and(StringUtils.hasLength(request.getParam()) ? hasParam(request.getParam()) : null)
-                .and(StringUtils.hasLength(request.getParamTypeEn()) ? hasParamType(request.getParamTypeEn()) : null);
+        return Specification.where(StringUtils.hasLength(request.username()) ? hasUser(request.username()) : null)
+                .and(StringUtils.hasLength(request.be()) ? hasBE(request.be()) : null)
+                .and(StringUtils.hasLength(request.application()) ? hasApplication(request.application()) : null)
+                .and(request.traceId() != null ? hasAction(request.traceId()) : null)
+                .and(StringUtils.hasLength(request.param()) ? hasParam(request.param()) : null)
+                .and(StringUtils.hasLength(request.paramTypeEn()) ? hasParamType(request.paramTypeEn()) : null);
     }
 
     private Pageable createPageable(PageActionRequest request) {
-        return PageableMaker.createPageable(request.getPageNo(), request.getSortDirection(), request.getSortColumn());
+        return PageableMaker.createPageable(request.pageNo(), request.sortDirection(), request.sortColumn());
     }
 }

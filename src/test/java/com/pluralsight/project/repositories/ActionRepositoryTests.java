@@ -17,7 +17,7 @@ import java.sql.Timestamp;
 class ActionRepositoryTests {
 
     @Autowired
-    private ActionRepository underTest;
+    private ActionRepository actionRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -27,7 +27,7 @@ class ActionRepositoryTests {
 
     @AfterEach
     void tearDown() {
-        underTest.deleteAll();
+        actionRepository.deleteAll();
     }
 
     @Test
@@ -61,10 +61,10 @@ class ActionRepositoryTests {
                 .deleted(false)
                 .build();
 
-        underTest.save(action);
+        actionRepository.save(action);
 
         //when
-        Action action1 = underTest.findByTraceId("1").orElseThrow();
+        Action action1 = actionRepository.findByTraceId("1").orElseThrow();
 
         assertThat(action).isEqualTo(action1);
     }

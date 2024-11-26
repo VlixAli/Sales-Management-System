@@ -1,6 +1,5 @@
 package com.pluralsight.project.controllers;
 
-import com.pluralsight.project.constants.StringConstants;
 import com.pluralsight.project.dtos.requests.ParamTypeRequest;
 import com.pluralsight.project.dtos.responses.ParamTypeResponse;
 import com.pluralsight.project.services.ParamTypeService;
@@ -10,12 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/v1/paramTypes")
+@RequestMapping("/paramTypes")
 @RequiredArgsConstructor
 public class ParamTypeController {
 
@@ -35,14 +33,12 @@ public class ParamTypeController {
     public ResponseEntity<ParamTypeResponse> update(
             @PathVariable Long id,
             @RequestBody @Validated(ParamTypeRequest.Update.class) ParamTypeRequest request) {
-        return new ResponseEntity<>(paramTypeService.update(id, request), HttpStatus.ACCEPTED);
+        return ResponseEntity.ok(paramTypeService.update(id, request));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> deleted(@PathVariable Long id) {
         paramTypeService.delete(id);
-        Map<String, String> response = new HashMap<>();
-        response.put(StringConstants.MESSAGE, StringConstants.PARAM_TYPE_DELETED_SUCCESSFULLY);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 }
